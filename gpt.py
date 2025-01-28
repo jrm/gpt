@@ -7,15 +7,15 @@ import os
 # hyperparameters
 batch_size = 64 # how many independent sequences will we process in parallel?
 block_size = 256 # what is the maximum context length for predictions?
-max_iters = 5000
-eval_interval = 100
-learning_rate = 3e-4
+max_iters = 5000 # how many iterations do we optimize the model for?
+eval_interval = 100 # how often do we evaluate the model?
+learning_rate = 3e-4 # how big of a step do we take in the optimizer?
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-eval_iters = 200
-n_embd = 384
-n_head = 6
-n_layer = 6
-dropout = 0.2
+eval_iters = 200 # how many iters do we use to estimate loss for train and val?
+n_embd = 384 # the size of the embedding dimension
+n_head = 6 # the number of heads in the multi-head attention
+n_layer = 6 # the number of blocks in the model
+dropout = 0.2 # the dropout value
 # ------------
 
 print(device)
@@ -53,6 +53,7 @@ def get_batch(split):
 
 @torch.no_grad()
 def estimate_loss():
+    # we evaluate the loss on a few examples from the training and validation sets
     out = {}
     model.eval()
     for split in ['train', 'val']:
